@@ -22,39 +22,69 @@ if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
 fi
 
 slug="$1"
-solution_dir=$(realpath "${2%/}")
+relative_solution_dir="$2"
 output_dir=$(realpath "${3%/}")
+relative_test_file="${relative_solution_dir}/${slug}-test.arr"
 results_file="${output_dir}/results.json"
 
-# Create the output directory if it doesn't exist
 mkdir -p "${output_dir}"
-
 echo "${slug}: testing..."
 
-# Run the tests for the provided implementation file and redirect stdout and
-# stderr to capture it
-test_output=$(false)
-# TODO: substitute "false" with the actual command to run the test:
-# test_output=$(command_to_run_tests 2>&1)
+timeout_duration=5
 
-# Write the results.json file based on the exit code of the command that was 
-# just executed that tested the implementation file
-if [ $? -eq 0 ]; then
-    jq -n '{version: 1, status: "pass"}' > ${results_file}
-else
-    # OPTIONAL: Sanitize the output
-    # In some cases, the test output might be overly verbose, in which case stripping
-    # the unneeded information can be very helpful to the student
-    # sanitized_test_output=$(printf "${test_output}" | sed -n '/Test results:/,$p')
+redirect_file=$(mktemp)
+pyret_command="pyret -q ${relative_test_file}"
+timeout $timeout_duration $pyret_command &> $redirect_file
 
-    # OPTIONAL: Manually add colors to the output to help scanning the output for errors
-    # If the test output does not contain colors to help identify failing (or passing)
-    # tests, it can be helpful to manually add colors to the output
-    # colorized_test_output=$(echo "${test_output}" \
-    #      | GREP_COLOR='01;31' grep --color=always -E -e '^(ERROR:.*|.*failed)$|$' \
-    #      | GREP_COLOR='01;32' grep --color=always -E -e '^.*passed$|$')
-
-    jq -n --arg output "${test_output}" '{version: 1, status: "fail", message: $output}' > ${results_file}
+timeout_status=$?
+if [ $timeout_status -eq 124 ]; then
+    rm "$redirect_file"
+    redirect_file=$(mktemp)
+    timeout $timeout_duration stdbuf -oL -eL $pyret_command &> $redirect_file
+    timeout_status=$?
 fi
 
-echo "${slug}: done"
+if [ $timeout_status -eq 124 ]; then
+    status="error"
+    message="Test runner timed out"
+    jq -n --arg output "${message}" --arg status "${status}" '{version: 1, status: $status, message: $output}' > ${results_file}
+else
+    # Run the tests for the provided implementation file and redirect stdout and
+    # stderr to capture it
+    test_output=$(cat "$redirect_file")
+    rm "$redirect_file"
+    # Write the results.json file based on the exit code of the command that was
+    # just executed that tested the implementation file
+
+    # pyret reports 0 for a syntax error or empty file
+    success=$(echo "${test_output}" | grep -c -E 'Looks shipshape, all [0-9]+ test[s]* passed')
+    error=$(echo "${test_output}" | grep -c -E "Pyret didn't understand your program")
+    if [[ $success -gt 0 ]]; then
+        jq -n '{version: 1, status: "pass"}' > ${results_file}
+    else
+        # OPTIONAL: Sanitize the output
+        # In some cases, the test output might be overly verbose, in which case stripping
+        # the unneeded information can be very helpful to the student
+        # sanitized_test_output=$(printf "${test_output}" | sed -n '/Test results:/,$p')
+
+        text_to_remove="file://$(realpath "${2%/}")/"
+
+        sanitized_test_output=$(echo "${test_output}" | sed "s@${text_to_remove}@@g")
+        sanitized_test_output=$(echo "${sanitized_test_output}" | sed '/./,$!d; s/^[[:space:]]*//; s/\n/ /g')
+        status="fail"
+        if [[ $error -gt 0 ]]; then
+            status="error"
+        fi
+
+        # OPTIONAL: Manually add colors to the output to help scanning the output for errors
+        # If the test output does not contain colors to help identify failing (or passing)
+        # tests, it can be helpful to manually add colors to the output
+        # colorized_test_output=$(echo "${test_output}" \
+        #      | GREP_COLOR='01;31' grep --color=always -E -e '^(ERROR:.*|.*failed)$|$' \
+        #      | GREP_COLOR='01;32' grep --color=always -E -e '^.*passed$|$')
+        # jq -n --arg output "${test_output}" '{version: 1, status: "fail", message: $output}' > ${results_file}
+        jq -n --arg output "${sanitized_test_output}" --arg status "${status}" '{version: 1, status: $status, message: $output}' > ${results_file}
+    fi
+
+    echo "${slug}: done"
+fi

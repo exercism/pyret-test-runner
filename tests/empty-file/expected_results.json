@@ -1,5 +1,5 @@
 {
   "version": 1,
   "status": "fail",
-  "message": "TODO: replace with correct output"
+  "message": "The identifier `leap` at empty-file-test.arr:4:2-4:6 is unbound. It is used but not previously defined.\nThere were compilation errors"
 }
