@@ -1,4 +1,4 @@
-include file("example-partial-fail.arr")
+include file("partial-fail.arr")
 
 check "year not divisible by 4 in common year":
   leap(2015) is true

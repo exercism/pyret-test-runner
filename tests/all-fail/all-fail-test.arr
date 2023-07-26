@@ -1,4 +1,4 @@
-include file("example-all-fail.arr")
+include file("all-fail.arr")
 
 check "year not divisible by 4 in common year":
   leap(2015) is true
