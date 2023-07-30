@@ -13,9 +13,6 @@
 
 exit_code=0
 # Iterate over all test directories
-timeout 1 pyret &> /dev/null # spin up compile server
-
-# Iterate over all test directories
 for test_dir in tests/*; do
     test_dir_name=$(basename "${test_dir}")
     test_dir_path=$(realpath "${test_dir}")
