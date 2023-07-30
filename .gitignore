@@ -1,1 +1,4 @@
 tests/*/results.json
+tests/*/*.jarr
+*.jarr
+.pyret

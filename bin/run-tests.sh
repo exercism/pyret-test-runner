@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # Synopsis:
-# Test the test runner by running it against a predefined set of solutions 
+# Test the test runner by running it against a predefined set of solutions
 # with an expected output.
 
 # Output:
@@ -12,18 +12,19 @@
 # ./bin/run-tests.sh
 
 exit_code=0
-
 # Iterate over all test directories
 for test_dir in tests/*; do
     test_dir_name=$(basename "${test_dir}")
     test_dir_path=$(realpath "${test_dir}")
     results_file_path="${test_dir_path}/results.json"
     expected_results_file_path="${test_dir_path}/expected_results.json"
+    relative_test_dir="tests/${test_dir_name}/"
 
-    bin/run.sh "${test_dir_name}" "${test_dir_path}" "${test_dir_path}"
-
+    current_dir=$(pwd)
+    bin/run.sh "${test_dir_name}" "${relative_test_dir}" "${relative_test_dir}"
+    cd "${current_dir}"
     # OPTIONAL: Normalize the results file
-    # If the results.json file contains information that changes between 
+    # If the results.json file contains information that changes between
     # different test runs (e.g. timing information or paths), you should normalize
     # the results file to allow the diff comparison below to work as expected
     # sed -i -E \
@@ -33,7 +34,6 @@ for test_dir in tests/*; do
 
     echo "${test_dir_name}: comparing results.json to expected_results.json"
     diff "${results_file_path}" "${expected_results_file_path}"
-
     if [ $? -ne 0 ]; then
         exit_code=1
     fi

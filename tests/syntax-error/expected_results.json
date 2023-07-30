@@ -1,5 +1,5 @@
 {
   "version": 1,
   "status": "error",
-  "message": "TODO: replace with correct output"
+  "message": "Pyret didn't understand your program around syntax-error.arr:1:14-1:18 You may need to add or remove some text to fix your program. Look carefully before the highlighted text. Is there a missing colon (`:`), comma (`,`), string marker (`\"`), or keyword? Is there something there that shouldn’t be?"
 }
