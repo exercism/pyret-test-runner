@@ -1,4 +1,4 @@
-# Exercism TRACK_NAME_HERE Test Runner
+# Exercism Pyret Test Runner
 
 The Docker image to automatically run tests on [Pyret] solutions submitted to [Exercism].
 
