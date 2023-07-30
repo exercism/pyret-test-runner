@@ -57,7 +57,7 @@ else
     # just executed that tested the implementation file
 
     # pyret reports 0 for a syntax error or empty file
-    success=$(echo "${test_output}" | grep -c -E 'Looks shipshape, all [0-9]+ test[s]* passed')
+    success=$(echo "${test_output}" | grep -c -E "Looks shipshape, (your|all [0-9]+) test[s]* passed")
     error=$(echo "${test_output}" | grep -c -E "Pyret didn't understand your program")
     if [[ $success -gt 0 ]]; then
         jq -n '{version: 1, status: "pass"}' > ${results_file}
