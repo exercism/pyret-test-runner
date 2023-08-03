@@ -22,9 +22,9 @@ if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
 fi
 
 slug="$1"
-relative_solution_dir="$2"
+solution_dir="$2"
 output_dir=$(realpath "${3%/}")
-relative_test_file="${relative_solution_dir}/${slug}-test.arr"
+relative_test_file="${slug}-test.arr"
 results_file="${output_dir}/results.json"
 
 mkdir -p "${output_dir}"
@@ -32,9 +32,11 @@ echo "${slug}: testing..."
 
 # Pyret seems to hang more often if I redirect stderr to stdout. 
 redirect_file=$(mktemp)
+cd "${output_dir}"
 pyret -q $relative_test_file &> $redirect_file
 test_output=$(cat $redirect_file)
 rm $redirect_file
+cd - > /dev/null
 
 # pyret reports 0 for a syntax error or empty file so we need to check the output closely
 success=$(echo "${test_output}" | grep -c -E "Looks shipshape, (your|all [0-9]+) test[s]* passed")
