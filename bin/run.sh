@@ -25,6 +25,7 @@ slug="$1"
 solution_dir="$2"
 output_dir=$(realpath "${3%/}")
 relative_test_file="${slug}-test.arr"
+compiled_test_file="${slug}-test.jarr"
 results_file="${output_dir}/results.json"
 
 mkdir -p "${output_dir}"
@@ -35,8 +36,16 @@ redirect_file=$(mktemp)
 cd "${output_dir}"
 pyret -q $relative_test_file &> $redirect_file
 test_output=$(cat $redirect_file)
+
 rm $redirect_file
+rm -r "${output_dir}/.pyret"
+
+if [ -f "$compiled_test_file" ]; then
+    rm "$compiled_test_file"
+fi
+
 cd - > /dev/null
+
 
 # pyret reports 0 for a syntax error or empty file so we need to check the output closely
 success=$(echo "${test_output}" | grep -c -E "Looks shipshape, (your|all [0-9]+) test[s]* passed")
