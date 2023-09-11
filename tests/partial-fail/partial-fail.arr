@@ -1,5 +1,9 @@
-provide: leap end
+provide: returns-true, returns-false end
 
-fun leap(year):
+fun returns-true():
   true
+end
+
+fun returns-false():
+  false
 end
