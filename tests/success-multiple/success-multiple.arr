@@ -1,11 +1,11 @@
 use context essentials2020
 
-provide: leap end
+provide: returns-true, returns-false end
 
-fun leap(year):
-  fun year-is-divisible-by(divisor):
-    num-equal(num-modulo(year, divisor), 0)
-  end
+fun returns-true():
+  true
+end
 
-  year-is-divisible-by(4) and (not(year-is-divisible-by(100)) or year-is-divisible-by(400))
+fun returns-false():
+  false
 end

@@ -1,7 +1,7 @@
 use context essentials2020
 
-provide: leap end
+provide: returns-true end
 
-fun leap(year):
-  false
+fun returns-true():
+  true
 end

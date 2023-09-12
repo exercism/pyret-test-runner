@@ -33,12 +33,18 @@ echo "${slug}: testing..."
 
 # Pyret seems to hang more often if I redirect stderr to stdout. 
 redirect_file=$(mktemp)
+
 cd "${output_dir}"
+
+sed -i.bak 's/test(\([^)]*\), false/test(\1, true/' $relative_test_file
+
 pyret -q $relative_test_file &> $redirect_file
 test_output=$(cat $redirect_file)
 
 rm $redirect_file
 rm -r "${output_dir}/.pyret"
+
+mv "${relative_test_file}.bak" "$relative_test_file"
 
 if [ -f "$compiled_test_file" ]; then
     rm "$compiled_test_file"
