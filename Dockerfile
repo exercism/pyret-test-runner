@@ -7,6 +7,7 @@ RUN apk add --no-cache \
     coreutils \
     g++ \
     jq \
+    pango \
     pkgconfig \
     pixman-dev \
     python3 \
