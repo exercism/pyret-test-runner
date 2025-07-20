@@ -8,7 +8,7 @@ RUN apk add --no-cache \
     g++ \
     jq \
     pango-dev \
-    pkgconfig \
+    pkgconfig \ 
     pixman-dev \
     python3 \
     make \
