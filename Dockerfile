@@ -1,4 +1,4 @@
-FROM alpine:3.17
+FROM alpine:3.22
 ARG PYRET_NPM_VERSION=0.0.50
 
 # install packages required to run the tests
