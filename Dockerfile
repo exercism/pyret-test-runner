@@ -3,6 +3,7 @@ ARG PYRET_NPM_VERSION=0.0.50
 
 # install packages required to run the tests
 RUN apk add --no-cache \
+    cairo-dev \
     coreutils \
     g++ \
     jq \
