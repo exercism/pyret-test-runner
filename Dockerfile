@@ -1,8 +1,18 @@
-FROM alpine:3.17
-ARG PYRET_NPM_VERSION=0.0.27
+FROM node:lts-alpine3.22
+ARG PYRET_NPM_VERSION=0.0.50
 
 # install packages required to run the tests
-RUN apk add --no-cache jq coreutils nodejs npm && \
+RUN apk add --no-cache \
+    cairo-dev \
+    coreutils \
+    g++ \
+    jq \
+    pango-dev \
+    pkgconfig \ 
+    pixman-dev \
+    python3 \
+    make \
+    g++ && \
     npm install -g pyret-npm@$PYRET_NPM_VERSION
 
 WORKDIR /opt/test-runner
