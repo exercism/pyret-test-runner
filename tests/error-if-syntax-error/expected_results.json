@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "status": "error",
+  "message": "Pyret didn't understand your program around error-if-syntax-error.arr:3:22-3:26 \nYou may need to add or remove some text to fix your program. \nLook carefully before the highlighted text. \nIs there a missing colon (`:`), comma (`,`), string marker (`\"`), or keyword? \nIs there something there that shouldn’t be?"
+}

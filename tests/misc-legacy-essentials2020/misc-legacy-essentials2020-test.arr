@@ -1,6 +1,6 @@
 use context essentials2020
 
-include file("partial-fail.arr")
+include file("misc-legacy-essentials2020.arr")
 
 #|
   When working offline, all tests except the first one are skipped by default.
@@ -14,9 +14,9 @@ fun returns-true-is-true():
   end
 end
 
-fun returns-false-is-true():
+fun returns-false-is-false():
   check "returns-false returns true":
-    returns-false() is true
+    returns-false() is false
   end
 end
 
@@ -30,5 +30,5 @@ data TestRun: test(run, active) end
 
 [list: 
   test(returns-true-is-true, true),
-  test(returns-false-is-true, false)
+  test(returns-false-is-false, false)
 ].each(lam(t): when t.active: t.run() end end)

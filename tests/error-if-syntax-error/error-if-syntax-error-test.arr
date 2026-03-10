@@ -1,6 +1,6 @@
-use context essentials2020
+use context starter2024
 
-include file("success-can-include-module.arr")
+include file("error-if-syntax-error.arr")
 
 #|
   When working offline, all tests except the first one are skipped by default.
@@ -8,9 +8,9 @@ include file("success-can-include-module.arr")
   Check the block comment below for further details.
 |#
 
-fun can-include-a-module():
-  check "can include a module without error":
-    include-math-module() is true
+fun returns-true-is-true():
+  check "returns-true returns true":
+    returns-true() is true
   end
 end
 
@@ -23,5 +23,5 @@ end
 data TestRun: test(run, active) end
 
 [list: 
-  test(can-include-a-module, true)
+  test(returns-true-is-true, true)
 ].each(lam(t): when t.active: t.run() end end)

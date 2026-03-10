@@ -1,6 +1,6 @@
-use context essentials2020
+use context starter2024
 
-include file("success-single.arr")
+include file("pass-if-only-test-passes.arr")
 
 #|
   When working offline, all tests except the first one are skipped by default.

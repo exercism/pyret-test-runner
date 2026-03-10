@@ -62,7 +62,8 @@ else
     text_to_remove="file://$(realpath "${2%/}")/"
 
     sanitized_test_output=$(echo "${test_output}" | sed "s@${text_to_remove}@@g")
-    sanitized_test_output=$(echo "${sanitized_test_output}" | sed '/./,$!d; s/^[[:space:]]*//; s/\n/ /g')
+    # Punting on a diagnostic line discrepancy between macOS and Docker for syntax errors
+    sanitized_test_output=$(echo "${sanitized_test_output}" | sed -E '/^There were [0-9]+ potential parses\./d; /^Parse failed, next token is /d; /./,$!d; s/^[[:space:]]*//')
     status="fail"
     if [[ $error -gt 0 ]]; then
         status="error"
