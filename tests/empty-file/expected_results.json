@@ -1,5 +1,0 @@
-{
-  "version": 1,
-  "status": "fail",
-  "message": "The identifier `returns-true` at empty-file-test.arr:13:4-13:16 is unbound. It is used but not previously defined.\nThere were compilation errors"
-}

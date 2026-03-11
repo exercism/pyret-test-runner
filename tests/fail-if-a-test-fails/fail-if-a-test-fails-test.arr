@@ -1,6 +1,6 @@
-use context essentials2020
+use context starter2024
 
-include file("all-fail.arr")
+include file("fail-if-a-test-fails.arr")
 
 #|
   When working offline, all tests except the first one are skipped by default.
@@ -8,15 +8,15 @@ include file("all-fail.arr")
   Check the block comment below for further details.
 |#
 
-fun will-fail():
-  check "returns-false() returns true":
-    returns-false() is true
+fun returns-true-is-true():
+  check "returns-true returns true":
+    returns-true() is true
   end
 end
 
-fun will-also-fail():
-  check "return-false() returns 5":
-    returns-false() is 5
+fun returns-false-is-true():
+  check "returns-false returns true":
+    returns-false() is true
   end
 end
 
@@ -29,6 +29,6 @@ end
 data TestRun: test(run, active) end
 
 [list: 
-  test(will-fail, true),
-  test(will-also-fail, false)
+  test(returns-true-is-true, true),
+  test(returns-false-is-true, false)
 ].each(lam(t): when t.active: t.run() end end)

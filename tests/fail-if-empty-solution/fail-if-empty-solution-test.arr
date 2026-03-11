@@ -1,6 +1,6 @@
-use context essentials2020
+use context starter2024
 
-include file("success-multiple.arr")
+include file("fail-if-empty-solution.arr")
 
 #|
   When working offline, all tests except the first one are skipped by default.
@@ -14,12 +14,6 @@ fun returns-true-is-true():
   end
 end
 
-fun returns-false-is-false():
-  check "returns-false returns true":
-    returns-false() is false
-  end
-end
-
 #|
   Code to run each test. Each line corresponds to a test above and whether it should be run.
   To mark a test to be run, replace `false` with `true` on that same line after the comma.
@@ -29,6 +23,5 @@ end
 data TestRun: test(run, active) end
 
 [list: 
-  test(returns-true-is-true, true),
-  test(returns-false-is-false, false)
+  test(returns-true-is-true, true)
 ].each(lam(t): when t.active: t.run() end end)
