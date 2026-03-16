@@ -6,8 +6,8 @@ RUN apk add --no-cache \
     jq && \
     npm install -g pyret-npm@$PYRET_NPM_VERSION --ignore-scripts && \
     # purposefully not including these two expected dependencies
-    sed -i "s/vegaMin = nodeRequire(.*);/vegaMin = {};/g" /usr/local/lib/node_modules/pyret-npm/pyret-lang/build/phaseA/bundled-node-deps.js && \
-    sed -i "s/canvas = require(\"canvas\");/canvas = {};/g" /usr/local/lib/node_modules/pyret-npm/pyret-lang/build/phaseA/bundled-node-deps.js && \
+    sed -i "s/vegaMin = nodeRequire(.*);/vegaMin = {};/" /usr/local/lib/node_modules/pyret-npm/pyret-lang/build/phaseA/bundled-node-deps.js && \
+    sed -i "s/canvas = require(\"canvas\");/canvas = {};/" /usr/local/lib/node_modules/pyret-npm/pyret-lang/build/phaseA/bundled-node-deps.js && \
     echo "module.exports = {};" > /usr/local/lib/node_modules/pyret-npm/node_modules/canvas/index.js
 
 WORKDIR /opt/test-runner
