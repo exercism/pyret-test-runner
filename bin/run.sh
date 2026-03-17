@@ -52,7 +52,7 @@ if [ -f "$compiled_test_file" ]; then
     rm "$compiled_test_file"
 fi
 
-if [ "${legacy_harness}" = true ]; then
+if [[ "${legacy_harness}" = true ]]; then
     mv "${relative_test_file}.bak" "$relative_test_file"
 fi
 
