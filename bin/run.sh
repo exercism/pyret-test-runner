@@ -38,7 +38,7 @@ cd "${output_dir}"
 
 legacy_harness=false
 if grep -q 'data TestRun: test(run, active) end' "${relative_test_file}" 2>/dev/null; then
-    sed -i.bak 's/test(\([^)]*\), false/test(\1, true/' $relative_test_file
+    sed -i.bak 's/test(\([^)]*\), false/test(\1, true/' "${relative_test_file}"
     legacy_harness=true
 fi
 
