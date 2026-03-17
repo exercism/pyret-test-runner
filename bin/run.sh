@@ -36,7 +36,11 @@ redirect_file=$(mktemp)
 
 cd "${output_dir}"
 
-sed -i.bak 's/test(\([^)]*\), false/test(\1, true/' $relative_test_file
+legacy_harness=false
+if grep -q 'data TestRun: test(run, active) end' "${relative_test_file}" 2>/dev/null; then
+    sed -i.bak 's/test(\([^)]*\), false/test(\1, true/' $relative_test_file
+    legacy_harness=true
+fi
 
 pyret -q $relative_test_file &> $redirect_file
 test_output=$(cat $redirect_file)
@@ -44,10 +48,12 @@ test_output=$(cat $redirect_file)
 rm $redirect_file
 rm -r "${output_dir}/.pyret"
 
-mv "${relative_test_file}.bak" "$relative_test_file"
-
 if [ -f "$compiled_test_file" ]; then
     rm "$compiled_test_file"
+fi
+
+if [ "${legacy_harness}" = true ]; then
+    mv "${relative_test_file}.bak" "$relative_test_file"
 fi
 
 cd - > /dev/null
@@ -62,8 +68,17 @@ else
     text_to_remove="file://$(realpath "${2%/}")/"
 
     sanitized_test_output=$(echo "${test_output}" | sed "s@${text_to_remove}@@g")
-    # Punting on a diagnostic line discrepancy between macOS and Docker for syntax errors
-    sanitized_test_output=$(echo "${sanitized_test_output}" | sed -E '/^There were [0-9]+ potential parses\./d; /^Parse failed, next token is /d; /./,$!d; s/^[[:space:]]*//')
+    if [ "${legacy_harness}" = false ]; then
+        # Punting on a diagnostic line discrepancy between macOS and Docker for syntax errors
+        sanitized_test_output=$(echo "${sanitized_test_output}" | sed -E '
+          /^There were [0-9]+ potential parses\./d
+          /^Parse failed, next token is /d
+        ')
+    fi
+    sanitized_test_output=$(echo "${sanitized_test_output}" | sed -E '
+      /./,$!d
+      s/^[[:space:]]*//
+    ')
     status="fail"
     if [[ $error -gt 0 ]]; then
         status="error"
