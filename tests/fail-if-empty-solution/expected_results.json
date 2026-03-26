@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "status": "fail",
+  "message": "The name `returns-true` at fail-if-empty-solution-test.arr:6:2-6:14 is unbound. It is used but not previously defined.  You may need to run the program, or check dashes and capitalization in the name.\n\nThere were compilation errors"
+}

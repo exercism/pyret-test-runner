@@ -1,6 +1,6 @@
 use context essentials2020
 
-include file("syntax-error.arr")
+include file("misc-legacy-test-harness.arr")
 
 #|
   When working offline, all tests except the first one are skipped by default.
@@ -14,6 +14,12 @@ fun returns-true-is-true():
   end
 end
 
+fun returns-false-is-true():
+  check "returns-false returns true":
+    returns-false() is true
+  end
+end
+
 #|
   Code to run each test. Each line corresponds to a test above and whether it should be run.
   To mark a test to be run, replace `false` with `true` on that same line after the comma.
@@ -23,5 +29,6 @@ end
 data TestRun: test(run, active) end
 
 [list: 
-  test(returns-true-is-true, true)
+  test(returns-true-is-true, true),
+  test(returns-false-is-true, false)
 ].each(lam(t): when t.active: t.run() end end)
