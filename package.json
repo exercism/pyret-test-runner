@@ -1,0 +1,15 @@
+{
+  "name": "@exercism/pyret-test-runner",
+  "description": "Automated test runner for Exercism solutions in Pyret.",
+  "author": "Andras B Nagy",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/exercism/pyret-test-runner.git"
+  },
+  "dependencies": {
+    "pyret-npm": "0.1.26"
+  },
+  "packageManager": "npm@11.13.0"
+}
