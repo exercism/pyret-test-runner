@@ -2,3 +2,4 @@ tests/*/results.json
 tests/*/*.jarr
 *.jarr
 .pyret
+node_modules/
