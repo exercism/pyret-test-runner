@@ -17,7 +17,7 @@ RUN apk add --no-cache \
     sed -i "s/vegaMin = nodeRequire(.*);/vegaMin = {};/" node_modules/pyret-npm/pyret-lang/build/ts-compiler/bundled-node-deps.js && \
     sed -i "s/canvas = require(\"canvas\");/canvas = {};/" node_modules/pyret-npm/pyret-lang/build/ts-compiler/bundled-node-deps.js && \
     echo "module.exports = {};" > node_modules/pyret-npm/node_modules/canvas/index.js && \
-    # Remove the legacy compiler and npm's download cache.
+    # Remove the legacy compiler
     rm -rf node_modules/pyret-npm/pyret-lang/build/phaseA
 
 WORKDIR /opt/test-runner
